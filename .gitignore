@@ -1,0 +1,5 @@
+# Visual Studio Code
+*.code-workspace
+
+# Pipenv
+Pipfile.lock
