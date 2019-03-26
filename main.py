@@ -4,16 +4,16 @@ import cv2
 
 def get_angle(contour):
     [vx, vy, x, y] = cv2.fitLine(contour, cv2.DIST_L2, 0, 0.01, 0.01)
-    return calculate_angle(vx, -vy)
+    return calculate_angle(-vx, vy)
 def calculate_angle(vx, vy):
     if vx == 0 and vy > 0:
         return 90
     elif vx == 0 and vy < 0:
         return 270
     elif vx > 0 and vy > 0:
-        return np.arctan(vy/vx)/3.1415*180
+        return np.arctan(vy/vx)/3.1415*180-180
     elif vx > 0 and vy < 0:
-        return 360 + np.arctan(vy/vx)/3.1415*180
+        return np.arctan(vy/vx)/3.1415*180
     elif vx < 0 and vy < 0:
         return 180 + np.arctan(vy/vx)/3.1415*180
     elif vx < 0 and vy > 0:
@@ -22,6 +22,12 @@ def calculate_angle(vx, vy):
         return 0
     elif vy == 0 and vx < 0:
         return 180
+def get_hour(angle):
+    return ((360-angle)//30+3)%12
+def get_minute(angle):
+    return ((360-angle)//6+15)%60
+def get_second(angle):
+    return ((360-angle)//6+15)%60
 
 if __name__ == '__main__':
     name = "Analog Clock"
@@ -69,3 +75,5 @@ if __name__ == '__main__':
         hour_angle = get_angle(hour_hand[0])
 
         print(second_angle, minute_angle, hour_angle)
+        print(get_second(second_angle), get_minute(minute_angle), get_hour(hour_angle))
+        print()
